@@ -1,0 +1,39 @@
+classDiagram
+    direction TB
+
+    class IPlacementStrategy {
+        <<interface>>
+        +place(tile: ITile, context: IPlacementContext) boolean
+    }
+
+    class IPlacementContext {
+        <<interface>>
+        +containerWidth: number
+        +tilesLines: ITilesLines
+        +hiddenTilesManager: IHiddenTilesManager
+        +verticalOverlapsLines: ITileLine[]
+    }
+
+    class AbstractStrategy {
+        <<abstract>>
+    }
+
+    class FreeSpacePlacementStrategy {
+    }
+
+    class WidestLinePlacementStrategy {
+    }
+
+    class PlacementContext {
+        +containerWidth: number
+        +tilesLines: ITilesLines
+        +hiddenTilesManager: IHiddenTilesManager
+        +verticalOverlapsLines: ITileLine[]
+    }
+
+    IPlacementStrategy <|.. AbstractStrategy
+    AbstractStrategy <|-- FreeSpacePlacementStrategy
+    AbstractStrategy <|-- WidestLinePlacementStrategy
+    IPlacementContext <|.. PlacementContext
+
+    PlacementContext "1" *-- "1" AbstractStrategy

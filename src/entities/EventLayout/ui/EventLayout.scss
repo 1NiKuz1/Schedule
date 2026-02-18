@@ -1,0 +1,22 @@
+.events {
+    box-sizing: border-box;
+    position: relative;
+    border: 1px solid var(--color-tool-border);
+    &--selected {
+        background-color: var(--color-tool);
+    }
+    .schedule-tooltip-container {
+        position: absolute;
+        .oval-text {
+            width: 100%;
+        }
+    }
+    .events-list {
+        &-item {
+            display: flex;
+            &__description {
+                margin-right: 16px;
+            }
+        }
+    }
+}

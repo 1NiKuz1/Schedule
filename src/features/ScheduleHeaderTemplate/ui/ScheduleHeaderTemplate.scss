@@ -1,0 +1,15 @@
+.schedule-header-template {
+    display: grid;
+    width: 100%;
+    min-width: 100%;
+    box-sizing: border-box;
+    grid-template-columns: repeat(3, minmax(min-content, 1fr));
+    column-gap: 20px;
+    align-items: center;
+    padding: 4px 8px;
+    border: 1px solid var(--color-tool-border);
+
+    &__drop-down {
+        justify-self: end;
+    }
+}

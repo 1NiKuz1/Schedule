@@ -1,0 +1,5 @@
+@for $i from 1 through 30 {
+    .viz-color-back-#{$i} {
+        background-color: var(--color-back-#{$i});
+    }
+}

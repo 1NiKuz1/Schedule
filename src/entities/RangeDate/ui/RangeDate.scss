@@ -1,0 +1,30 @@
+.range-date {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .ui-font-icon {
+        color: var(--color-primary);
+        transition: opacity 0.1s ease-out;
+    }
+    .ui-font-icon--disabled {
+        opacity: 0.4;
+    }
+
+    &__visible-date {
+        display: inline-flex;
+        margin: 0;
+        padding: 6px 4px;
+        margin: 0 8px;
+        border-radius: 4px;
+        color: var(--color-primary);
+        font: var(--font-regular-text-2);
+        white-space: nowrap;
+        cursor: pointer;
+        user-select: none;
+        transition: background-color 0.1s ease-out;
+    }
+    &__visible-date:hover {
+        background-color: var(--color-primary-hover);
+    }
+}

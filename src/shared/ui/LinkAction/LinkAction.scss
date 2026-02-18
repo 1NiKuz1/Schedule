@@ -1,0 +1,13 @@
+.link-action {
+    display: flex;
+    margin: 0;
+    padding-left: 4px;
+    font: var(--font-bold-caption-1);
+    color: var(--color-bg-dark);
+    cursor: pointer;
+}
+.link-action__triangale {
+    width: 8px;
+    height: 8px;
+    background: linear-gradient(to bottom left, var(--color-primary) 50%, transparent 50%);
+}

@@ -1,0 +1,48 @@
+@use "../../styles/schedule.scss";
+.schedule-block {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2px 4px;
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: var(--color-back-1);
+    cursor: pointer;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.15);
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    &:hover:before {
+        opacity: 1;
+    }
+
+    &__description,
+    &__title {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        user-select: none;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    &__title {
+        font: var(--font-title-tile);
+        color: var(--color-title-tile);
+    }
+
+    &__description {
+        font: var(--font-description-tile);
+        color: var(--color-description-tile);
+    }
+}

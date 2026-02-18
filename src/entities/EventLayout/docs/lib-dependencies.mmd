@@ -1,0 +1,43 @@
+flowchart TD
+    subgraph Model[Core classes]
+        WLS[WidestLinePlacementStrategy]
+        Tile
+        HTC[HiddenTilesCalculation]
+        DFS[DistributionFreeSpace]
+        ELM[EventLayoutModel]
+        TileL[TileLine]
+        TilesL[TilesLines]
+        HTM[HiddenTilesManager]
+        FSP[FreeSpacePlacementStrategy]
+    end
+
+    subgraph Lib[Lib classes]
+        BU[BoundaryUtils]
+        FC[FloatComparator]
+        EU[EventUtils]
+        BC[ButtonWidthCalculator]
+    end
+
+    FSP --> BU
+    WLS --> BU
+    Tile --> BU
+    TileL --> BU
+    TilesL --> BU
+    HTM --> BU
+    HTC --> BU
+    DFS --> BU
+    ELM --> BU
+
+    BU --> FC
+    WLS --> FC
+    Tile --> FC
+    HTC --> FC
+    DFS --> FC
+    ELM --> FC
+
+    BU --> EU
+    HTM --> EU
+    ELM --> EU
+
+    HTC --> BC
+    DFS --> BC

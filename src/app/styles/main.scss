@@ -1,0 +1,5 @@
+@use "./fonts/roboto" as roboto;
+@use "./fonts/schedule-icons" as schedule-icons;
+@use "./variables";
+@include roboto.fonts-roboto();
+@include schedule-icons.fonts-shedule-icons();

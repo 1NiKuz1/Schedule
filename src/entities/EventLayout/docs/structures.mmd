@@ -1,0 +1,53 @@
+classDiagram
+    note for LinkedEntity "A base class for entities<br>with bidirectional relationships"
+    note for LinkedOverlapEntity "Combined Entity:<br>connections + overlaps"
+
+    class ILinkedEntity~T~ {
+        <<interface>>
+        +next: T[]
+        +prev: T[]
+        +addNext(entity: T) boolean
+        +addPrev(entity: T) boolean
+        +removeNext(entity: T) void
+        +removePrev(entity: T) void
+        +deleteAllLinks() void
+    }
+
+    class IOverlapEntity~T~ {
+        <<interface>>
+        +overlaps: T[]
+        +addOverlap(entity: T) boolean
+        +removeOverlap(entity: T) void
+        +deleteAllOverlaps() void
+    }
+
+    class ILinkedOverlapEntity~T~ {
+        <<interface>>
+    }
+
+    class LinkedEntity~T~ {
+        <<abstract>>
+        +next: T[]
+        +prev: T[]
+        +addNext(entity: T) boolean
+        +addPrev(entity: T) boolean
+        +removeNext(entity: T) void
+        +removePrev(entity: T) void
+        +deleteAllLinks() void
+    }
+
+    class LinkedOverlapEntity~T~ {
+        <<abstract>>
+        #overlaps: T[]
+        +addOverlap(entity: T) boolean
+        +removeOverlap(entity: T) void
+        +deleteAllOverlaps() void
+    }
+
+    ILinkedEntity <|-- ILinkedOverlapEntity
+    IOverlapEntity <|-- ILinkedOverlapEntity
+
+    LinkedEntity <|-- LinkedOverlapEntity
+
+    ILinkedEntity <|.. LinkedEntity
+    ILinkedOverlapEntity <|.. LinkedOverlapEntity

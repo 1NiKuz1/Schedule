@@ -1,0 +1,35 @@
+.events-list {
+    max-height: 420px;
+    margin: 0;
+    padding: 0;
+    border-radius: 4px;
+    overflow-y: auto;
+    list-style-type: none;
+    scrollbar-color: #d9d9d9 transparent;
+    scrollbar-width: thin;
+
+    &-item {
+        padding: 8px;
+        transition: background-color 0.1s ease-out;
+
+        &__description,
+        &__title {
+            font: var(--font-regular-text-1);
+            user-select: none;
+        }
+
+        &__description {
+            white-space: nowrap;
+            color: #5e5e5e;
+        }
+
+        &__title {
+            margin: 0;
+            color: var(--color-bg-dark);
+        }
+    }
+
+    &-item:hover {
+        background-color: var(--color-primary-hover);
+    }
+}

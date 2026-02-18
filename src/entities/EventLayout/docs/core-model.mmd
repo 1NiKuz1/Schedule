@@ -1,0 +1,93 @@
+classDiagram
+    direction LR
+
+    class ITile {
+        <<interface>>
+        +height: number
+        +width: number
+        +overlaps: ITile[]
+        +lineKey: IBoundaries~null~
+        +hiddenKey: IVerticalBoundaries~null~
+        +get boundaries() IBoundaries
+        +isNeighbour(neighbour: ITile, isNext: boolean) boolean
+        +fillNeighbours() void
+    }
+
+    class ITilesLines {
+        <<interface>>
+        +lines: Map~IBoundaries, ITileLine~
+        +addLine(tile: ITile) IBoundaries
+        +tileVerticalOverlapsLines(tile: ITile) ITileLine[]
+        +redistributeLineTiles(line: ITileLine) void
+    }
+
+    class ITileLine {
+        <<interface>>
+        +boundaries: IBoundaries
+        +tiles: ITile[]
+        +addTile(tile: ITile) void
+        +removeTile(tile: ITile) void
+        +overwriteHorizontalBoundaries(boundaries: IHorizontalBoundaries) void
+    }
+
+    class IHiddenTilesManager {
+        <<interface>>
+        +get hiddenTilesMap() Map~IVerticalBoundaries, ITile[]~
+        +get hiddenTiles() ITile[]
+        +get hiddenKeys() IVerticalBoundaries[]
+        +hasHiddenInRange(keyOfLine: IVerticalBoundaries) boolean
+        +getTilesByKey(key: IVerticalBoundaries) ITile[]
+        +registerHiddenKey(tile: ITile) IVerticalBoundaries
+        +addTile(tile: ITile) boolean
+        +removeTile(tile: ITile) boolean
+    }
+
+    class IHiddenTilesCalculation {
+        <<interface>>
+        +calcHiddenTiles(containerWidth: number) void
+    }
+
+    class Tile {
+    }
+
+    class TileLine {
+    }
+
+    class TilesLines {
+    }
+
+    class HiddenTilesManager {
+    }
+
+    class HiddenTilesCalculation {
+    }
+
+    class DistributionFreeSpace {
+    }
+
+    class EventLayoutModel {
+    }
+
+    ITile <|.. Tile
+    ITileLine <|.. TileLine
+    ITilesLines <|.. TilesLines
+    IHiddenTilesManager <|.. HiddenTilesManager
+    IHiddenTilesCalculation <|.. HiddenTilesCalculation
+
+    LinkedOverlapEntity <|-- Tile
+
+    TileLine o-- ITile
+    TilesLines *-- ITileLine
+    HiddenTilesManager o-- ITile
+    HiddenTilesCalculation --o ITilesLines
+    HiddenTilesCalculation --o IHiddenTilesManager
+    DistributionFreeSpace --o IHiddenTilesManager
+    DistributionFreeSpace --o ITileLine
+    DistributionFreeSpace --o ITile
+    EventLayoutModel --* IHiddenTilesManager
+    EventLayoutModel --* IPlacementStrategy
+    EventLayoutModel --* DistributionFreeSpace
+    EventLayoutModel --* IHiddenTilesCalculation
+    EventLayoutModel --* ITile
+    EventLayoutModel --* ITilesLines
+    EventLayoutModel --* IPlacementContext

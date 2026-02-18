@@ -1,0 +1,41 @@
+.time-block-wrapper {
+    position: relative;
+    box-sizing: border-box;
+    border: 1px solid var(--color-tool-border);
+    border-bottom: none;
+    .time-block {
+        display: flex;
+        align-items: center;
+        height: 100%;
+
+        span {
+            margin-left: 8px;
+            font: var(--font-regular-caption-1);
+            color: var(--color-bg-back);
+            user-select: none;
+        }
+    }
+
+    &:last-child {
+        border-bottom: 1px solid var(--color-tool-border);
+    }
+
+    .dots-container {
+        position: absolute;
+        display: flex;
+        top: 0;
+        left: 8px;
+
+        .dot {
+            height: 2px;
+            width: 2px;
+            background-color: var(--color-bg-back);
+            border-radius: 100%;
+            margin-right: 3px;
+        }
+    }
+}
+
+.hide-border-top {
+    border-top: 1px solid transparent;
+}

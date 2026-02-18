@@ -1,0 +1,8 @@
+@mixin fonts-shedule-icons() {
+    @font-face {
+        font-family: "Schedule icons";
+        src:
+            url("../../../../fonts/shedule icons/Shedule.woff2") format("woff2"),
+            url("../../../../fonts/shedule icons/Shedule.woff") format("woff");
+    }
+}
