@@ -34,7 +34,7 @@ describe("Entities/RangeDate", () => {
 
         it("Displaying the correct date format", () => {
             const wrapper = createWrapper();
-            expect(wrapper.vm["visibleDate"]).toBe("3 Jun - 5 Jun 2021");
+            expect(wrapper.vm["visibleDate"]).toBe("3 Jan - 5 Jan 2021");
         });
 
         it("A single date is formatted correctly", async () => {
