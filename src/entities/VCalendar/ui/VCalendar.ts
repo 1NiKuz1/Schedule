@@ -1,7 +1,7 @@
-import { computed, defineComponent, onMounted, ref } from "vue";
-import type { ComputedRef, PropType, Ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
+import type { PropType, Ref } from "vue";
 
-import { parseDate, getMonthName, formatDateToString } from "@shared/lib";
+import { parseDate, getMonthName, formatDateToString, getElementAt } from "@shared/lib";
 import { FontIcon } from "@shared/ui";
 
 import "./VCalendar.scss";
@@ -58,40 +58,13 @@ export default defineComponent({
                     if (isSelected) {
                         currentDay.value = newDay;
                     }
-                    days.value[week]![i] = newDay;
+                    getElementAt(days.value, week)[i] = newDay;
                     ++currentNumOfDay;
                 }
                 currentDayOfWeek = 0;
                 ++week;
             }
         }
-
-        //function fillPreviousDays(firstDateOfMonth: Date, currentDayOfWeek: number) {
-        //    let lastDateNumberOfPreviousMonth = new Date(new Date(firstDateOfMonth).setDate(0)).getDate();
-        //    for (let i = currentDayOfWeek; i > 0; i--) {
-        //        if (!days.value[0]) {
-        //            days.value[0] = [];
-        //        }
-        //        days.value[0][i - 1] = {
-        //            value: new Date(firstDateOfMonth.getFullYear(), firstDateOfMonth.getMonth(), lastDateNumberOfPreviousMonth),
-        //            disabled: true,
-        //            selected: false
-        //        };
-        //        --lastDateNumberOfPreviousMonth;
-        //    }
-        //}
-
-        //function fillNextDays(lastDateOfMonth: Date, week: number) {
-        //    let currentDay = 1;
-        //    let currentDayOfWeek = lastDateOfMonth.getDay() - 1 < 0 ? 6 : lastDateOfMonth.getDay() - 1;
-        //    for (let i = currentDayOfWeek; i <= 6; i++) {
-        //        if (!days.value[week]) {
-        //            days.value[week] = [];
-        //        }
-        //        days.value[week]![i] = { value: currentDay, disabled: true, selected: false };
-        //        ++currentDay;
-        //    }
-        //}
 
         function onClickLeftArrow(): void {
             --currentMonth.value;

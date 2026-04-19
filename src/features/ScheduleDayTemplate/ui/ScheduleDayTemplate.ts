@@ -4,7 +4,7 @@ import { TimeBlock } from "@shared/ui";
 import { EventLayout } from "@entities/EventLayout";
 import { Sizes } from "@shared/config";
 import type { IEvent } from "@shared/typings";
-import { resizeObserver, formatDateToString, adjustWidthToParentScroll } from "@shared/lib";
+import { resizeObserver, formatDateToString, adjustWidthToParentScroll, getElementAt } from "@shared/lib";
 import { getCoveredHours, createDebounce } from "@shared/lib";
 import "./ScheduleDayTemplate.scss";
 
@@ -46,7 +46,7 @@ export default defineComponent({
             if (!index || !hours.length) {
                 return false;
             }
-            return hours[index]! - hours[index - 1]! > 1;
+            return getElementAt(hours, index) - getElementAt(hours, index - 1) > 1;
         }
 
         function prepareData(): void {

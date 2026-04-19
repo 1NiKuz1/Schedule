@@ -1,3 +1,4 @@
+import { getElementAt } from "@/shared/lib";
 import type { IPlacementContext, ITile, ITileLine, IHorizontalBoundaries } from "../typings";
 import { BoundaryUtils, FloatComparator } from "../../lib";
 import { AbstractStrategy } from "./AbstractStrategy";
@@ -12,13 +13,13 @@ export class WidestLinePlacementStrategy extends AbstractStrategy {
     }
 
     private redistributeAndPlace(tile: ITile): boolean {
-        const optimalLine: ITileLine = this.findOptimalLine(this.context!.verticalOverlapsLines);
+        const optimalLine: ITileLine = this.findOptimalLine(this.safeContext.verticalOverlapsLines);
         const optimalLineWidth: number = optimalLine.boundaries.right - optimalLine.boundaries.left;
         const boundaries: IHorizontalBoundaries = {
             left: optimalLine.boundaries.right - optimalLineWidth / (optimalLine.tiles.length + 1),
             right: optimalLine.boundaries.right
         };
-        if (this.isTilePlacementValid(tile, boundaries, this.context!.containerWidth)) {
+        if (this.isTilePlacementValid(tile, boundaries, this.safeContext.containerWidth)) {
             optimalLine.addTile(tile);
             BoundaryUtils.distributeTilesUniformly(optimalLine.tiles, optimalLine.boundaries);
             tile.fillNeighbours();
@@ -28,11 +29,11 @@ export class WidestLinePlacementStrategy extends AbstractStrategy {
     }
 
     private findOptimalLine(lines: ITileLine[]): ITileLine {
-        let optimalLine = lines[0]!;
+        let optimalLine = getElementAt(lines, 0);
         let optimalWidth = this.calculateEffectiveWidth(optimalLine);
 
         for (let i = 1; i < lines.length; i++) {
-            const currentLine = lines[i]!;
+            const currentLine = getElementAt(lines, i);
             const currentWidth = this.calculateEffectiveWidth(currentLine);
 
             if (FloatComparator.greater(currentWidth, optimalWidth)) {

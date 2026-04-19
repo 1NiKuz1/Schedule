@@ -23,8 +23,8 @@ export class TileLine implements ITileLine {
     public removeTile(@required tile: ITile): void {
         const index = this.tiles.indexOf(tile);
         if (index !== -1) {
-            this.tiles[index]!.deleteAllLinks();
-            this.tiles[index]!.deleteAllOverlaps();
+            tile.deleteAllLinks();
+            tile.deleteAllOverlaps();
             this.tiles.splice(index, 1);
             BoundaryUtils.overwriteVerticalBoundaries(this.boundaries, this.getLineVerticalBoundariesBasedTiles());
         }

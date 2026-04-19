@@ -1,4 +1,4 @@
-import { required, validate } from "@shared/lib";
+import { getElementAt, required, validate } from "@shared/lib";
 import type { IEvent } from "@shared/typings";
 import { Sizes } from "@shared/config";
 import type { IVerticalBoundaries, IHorizontalBoundaries, IBoundaries, ITile } from "../model/typings";
@@ -49,7 +49,7 @@ export class BoundaryUtils {
         if (!boundaries.length) {
             return null;
         }
-        let widest = boundaries[0]!;
+        let widest = getElementAt(boundaries, 0);
         let maxWidth = widest.right - widest.left;
 
         for (const boundary of boundaries.slice(1)) {
@@ -121,8 +121,9 @@ export class BoundaryUtils {
         const width: number = boundaries.right - boundaries.left;
         const tileWidth: number = width / tiles.length;
         for (let i = 0; i < tiles.length; ++i) {
-            tiles[i]!.width = tileWidth;
-            tiles[i]!.left = boundaries.left + i * tileWidth;
+            const tile: ITile = getElementAt(tiles, i);
+            tile.width = tileWidth;
+            tile.left = boundaries.left + i * tileWidth;
         }
     }
 

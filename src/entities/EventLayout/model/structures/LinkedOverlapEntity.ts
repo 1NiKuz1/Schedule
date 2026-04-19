@@ -1,4 +1,4 @@
-import { required, validate } from "@shared/lib";
+import { getElementAt, required, validate } from "@shared/lib";
 import { type ILinkedOverlapEntity } from "../typings";
 import { LinkedEntity } from ".";
 export abstract class LinkedOverlapEntity<T extends ILinkedOverlapEntity<T>> extends LinkedEntity<T> implements ILinkedOverlapEntity<T> {
@@ -25,7 +25,7 @@ export abstract class LinkedOverlapEntity<T extends ILinkedOverlapEntity<T>> ext
 
     public deleteAllOverlaps() {
         while (this.overlaps.length) {
-            this.removeOverlap(this.overlaps[0]!);
+            this.removeOverlap(getElementAt(this.overlaps, 0));
         }
     }
 }

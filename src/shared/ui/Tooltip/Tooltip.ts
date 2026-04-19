@@ -40,7 +40,7 @@ export default defineComponent({
             }
         }
 
-        function handleClick(event): void {
+        function handleClick(event: MouseEvent): void {
             if (isShowTooltip.value) {
                 isShowTooltip.value = false;
             } else {
@@ -55,8 +55,9 @@ export default defineComponent({
             }
         }
 
-        function handleClickOutside(event): void {
-            if (!event.target.closest(".schedule-tooltip-container")) {
+        function handleClickOutside(event: MouseEvent): void {
+            const target = event.target as HTMLElement;
+            if (target && !target.closest(".schedule-tooltip-container")) {
                 isShowTooltip.value = false;
             }
         }

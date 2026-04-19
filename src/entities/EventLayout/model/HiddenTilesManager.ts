@@ -4,23 +4,23 @@ import type { ITile, IHiddenTilesManager, IVerticalBoundaries } from "./typings"
 import { EventUtils, BoundaryUtils } from "../lib";
 
 export class HiddenTilesManager implements IHiddenTilesManager {
-    private hiddenTilesByKey: Map<IVerticalBoundaries, ITile[]> = new Map();
-    private hiddenKeysRegistry: Set<IVerticalBoundaries> = new Set();
+    private _hiddenTilesMap: Map<IVerticalBoundaries, ITile[]> = new Map();
+    private _hiddenKeysRegistry: Set<IVerticalBoundaries> = new Set();
 
     public get hiddenTilesMap(): Map<IVerticalBoundaries, ITile[]> {
-        return this.hiddenTilesByKey;
+        return this._hiddenTilesMap;
     }
 
     public get hiddenTiles(): ITile[] {
         let hiddenTiles: ITile[] = [];
-        for (const tiles of this.hiddenTilesByKey.values()) {
+        for (const tiles of this._hiddenTilesMap.values()) {
             hiddenTiles = [...tiles, ...hiddenTiles];
         }
         return hiddenTiles;
     }
 
     public get hiddenKeys(): IVerticalBoundaries[] {
-        return [...this.hiddenKeysRegistry];
+        return [...this._hiddenKeysRegistry];
     }
 
     @validate
@@ -30,7 +30,7 @@ export class HiddenTilesManager implements IHiddenTilesManager {
 
     @validate
     public getTilesByKey(@required key: IVerticalBoundaries): ITile[] {
-        return this.hiddenTilesByKey.get(key) ?? [];
+        return this._hiddenTilesMap.get(key) ?? [];
     }
 
     @validate
@@ -41,8 +41,8 @@ export class HiddenTilesManager implements IHiddenTilesManager {
             return existingKey;
         }
         const newKey: IVerticalBoundaries = this.createKeyForTile(tile);
-        this.hiddenTilesByKey.set(newKey, []);
-        this.hiddenKeysRegistry.add(newKey);
+        this._hiddenTilesMap.set(newKey, []);
+        this._hiddenKeysRegistry.add(newKey);
         tile.hiddenKey = newKey;
         return newKey;
     }
@@ -52,7 +52,7 @@ export class HiddenTilesManager implements IHiddenTilesManager {
         if (!tile.hiddenKey) {
             return false;
         }
-        const tiles: ITile[] | undefined = this.hiddenTilesByKey.get(tile.hiddenKey);
+        const tiles: ITile[] | undefined = this._hiddenTilesMap.get(tile.hiddenKey);
         if (!tiles) {
             return false;
         }
@@ -65,17 +65,17 @@ export class HiddenTilesManager implements IHiddenTilesManager {
         if (!tile.hiddenKey) {
             return false;
         }
-        const tiles: ITile[] | undefined = this.hiddenTilesByKey.get(tile.hiddenKey);
+        const tiles: ITile[] | undefined = this._hiddenTilesMap.get(tile.hiddenKey);
         if (!tiles) {
             return false;
         }
         const filteredTiles: ITile[] = tiles.filter(t => t !== tile);
-        this.hiddenTilesByKey.set(tile.hiddenKey, filteredTiles);
+        this._hiddenTilesMap.set(tile.hiddenKey, filteredTiles);
         return true;
     }
 
     private findMatchingKey(tile: ITile): IVerticalBoundaries | undefined {
-        return Array.from(this.hiddenTilesByKey.keys()).find(key => BoundaryUtils.hasVerticalOverlap(key, tile));
+        return Array.from(this._hiddenTilesMap.keys()).find(key => BoundaryUtils.hasVerticalOverlap(key, tile));
     }
 
     private createKeyForTile(tile: ITile): IVerticalBoundaries {

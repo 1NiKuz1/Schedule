@@ -1,4 +1,5 @@
 import type { IEvent } from "@shared/typings";
+import { getElementAt } from "@/shared/lib";
 import type {
     IVerticalBoundaries,
     IRow,
@@ -18,25 +19,26 @@ import { HiddenTilesCalculation } from "./HiddenTilesCalculation";
 import { DistributionFreeSpace } from "./DistributionFreeSpace";
 
 export class EventLayoutModel {
-    private rows: IRow[] = [];
-    private hiddenTilesManager: IHiddenTilesManager;
-    private placementStrategies: IPlacementStrategy[] = [new FreeSpacePlacementStrategy(), new WidestLinePlacementStrategy()];
+    private _rows: IRow[] = [];
+    private _hiddenTilesManager: IHiddenTilesManager;
+    private _placementStrategies: IPlacementStrategy[] = [new FreeSpacePlacementStrategy(), new WidestLinePlacementStrategy()];
+    private _events: IEvent[];
+    private _containerWidth: number;
 
-    constructor(
-        private events: IEvent[],
-        private containerWidth: number = 0
-    ) {
-        this.hiddenTilesManager = new HiddenTilesManager();
+    constructor(events: IEvent[], containerWidth: number = 0) {
+        this._events = events;
+        this._containerWidth = containerWidth;
+        this._hiddenTilesManager = new HiddenTilesManager();
         this.init();
     }
 
     public get hiddenTilesMap(): Map<IVerticalBoundaries, ITile[]> {
-        return this.hiddenTilesManager.hiddenTilesMap;
+        return this._hiddenTilesManager.hiddenTilesMap;
     }
 
     public get lines() {
         const lines: ITileLine[] = [];
-        for (const row of this.rows) {
+        for (const row of this._rows) {
             for (const line of row.tilesLines.lines.values()) {
                 lines.push(line);
             }
@@ -45,16 +47,16 @@ export class EventLayoutModel {
     }
 
     private init(): void {
-        this.rows = this.buildRows(this.events);
+        this._rows = this.buildRows(this._events);
         this.calcHiddenTiles();
-        const distributionFreeSpace: DistributionFreeSpace = new DistributionFreeSpace(this.hiddenTilesManager, this.containerWidth);
+        const distributionFreeSpace: DistributionFreeSpace = new DistributionFreeSpace(this._hiddenTilesManager, this._containerWidth);
         this.lines.forEach(line => distributionFreeSpace.fillEmptySpace(line));
     }
 
     private calcHiddenTiles(): void {
-        this.rows.forEach(row => {
-            const hiddenTilesCalculation: HiddenTilesCalculation = new HiddenTilesCalculation(this.hiddenTilesManager, row.tilesLines);
-            hiddenTilesCalculation.calcHiddenTiles(this.containerWidth);
+        this._rows.forEach(row => {
+            const hiddenTilesCalculation: HiddenTilesCalculation = new HiddenTilesCalculation(this._hiddenTilesManager, row.tilesLines);
+            hiddenTilesCalculation.calcHiddenTiles(this._containerWidth);
         });
     }
 
@@ -67,8 +69,8 @@ export class EventLayoutModel {
             let rowIndex = -1;
             // Search for the first matching line
             for (let i = rowEndTimes.length - 1; i >= 0; i--) {
-                if (FloatComparator.less(tile.top, rowEndTimes[i]!)) {
-                    if (BoundaryUtils.hasVerticalOverlap(rows[i]!, tile)) {
+                if (FloatComparator.less(tile.top, getElementAt(rowEndTimes, i))) {
+                    if (BoundaryUtils.hasVerticalOverlap(getElementAt(rows, i), tile)) {
                         rowIndex = i;
                         break;
                     }
@@ -77,9 +79,9 @@ export class EventLayoutModel {
                 break;
             }
             if (rowIndex >= 0) {
-                this.addTileToRow(rows[rowIndex]!, tile);
+                this.addTileToRow(getElementAt(rows, rowIndex), tile);
                 // Updating the end time of the line
-                rowEndTimes[rowIndex] = Math.max(rowEndTimes[rowIndex]!, tile.bottom);
+                rowEndTimes[rowIndex] = Math.max(getElementAt(rowEndTimes, rowIndex), tile.bottom);
                 continue;
             }
             const newRow = this.createRow(tile);
@@ -100,7 +102,7 @@ export class EventLayoutModel {
         const tile: ITile = new Tile(event);
         tile.height = EventUtils.calcEventHeight(event);
         tile.description = EventUtils.getEventDescription(event);
-        this.hiddenTilesManager.registerHiddenKey(tile);
+        this._hiddenTilesManager.registerHiddenKey(tile);
         return tile;
     }
 
@@ -108,12 +110,12 @@ export class EventLayoutModel {
         const verticalOverlapsLines: ITileLine[] = row.tilesLines.tileVerticalOverlapsLines(tile);
         this.fillTileOverlaps(verticalOverlapsLines, tile);
         const context: IPlacementContext = new PlacementContext(
-            this.containerWidth,
+            this._containerWidth,
             row.tilesLines,
-            this.hiddenTilesManager,
+            this._hiddenTilesManager,
             verticalOverlapsLines
         );
-        for (const strategy of this.placementStrategies) {
+        for (const strategy of this._placementStrategies) {
             if (strategy.place(tile, context)) {
                 BoundaryUtils.expandVerticalBoundaries(row, tile);
                 return;
@@ -128,6 +130,6 @@ export class EventLayoutModel {
 
     private addHiddenTile(tile: ITile): void {
         tile.deleteAllOverlaps();
-        this.hiddenTilesManager.addTile(tile);
+        this._hiddenTilesManager.addTile(tile);
     }
 }

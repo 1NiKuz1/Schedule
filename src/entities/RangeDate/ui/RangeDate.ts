@@ -1,7 +1,7 @@
 import { defineComponent, onMounted, onBeforeUnmount, computed, ref, watch } from "vue";
 import type { PropType } from "vue";
 
-import { formatDateToString, parseDate, getMonthName } from "@shared/lib";
+import { formatDateToString, parseDate, getMonthName, getElementAt } from "@shared/lib";
 import { FontIcon } from "@shared/ui";
 import { VCalendar } from "@entities/VCalendar/@x/RangeDate";
 
@@ -53,7 +53,7 @@ export default defineComponent({
 
         const currentDate = computed(() => parseDate(startDate.value)!);
         const leftLimitOfRange = computed(() => props.allowedDates[0]!);
-        const rightLimitOfRange = computed(() => props.allowedDates[props.allowedDates.length - 1]!);
+        const rightLimitOfRange = computed(() => getElementAt(props.allowedDates, props.allowedDates.length - 1));
         const isDisableLeftArrow = computed(() => leftLimitOfRange.value >= startDate.value);
         const isDisableRightArrow = computed(() => rightLimitOfRange.value <= endDate.value);
 

@@ -3,9 +3,17 @@ import { Sizes } from "@shared/config";
 
 export abstract class AbstractStrategy implements IPlacementStrategy {
     protected context: IPlacementContext | null = null;
+
     public place(tile: ITile, context: IPlacementContext): boolean {
         this.context = context;
         return true;
+    }
+
+    protected get safeContext(): IPlacementContext {
+        if (!this.context) {
+            throw new Error("Context has not been initialized");
+        }
+        return this.context;
     }
 
     protected isTilePlacementValid(tile: ITile, boundaries: IHorizontalBoundaries, containerWidth: number) {

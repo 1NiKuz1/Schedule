@@ -32,8 +32,7 @@ export class TilesLines implements ITilesLines {
     public redistributeLineTiles(@required line: ITileLine): void {
         let currentLineKey: IBoundaries | null = null;
         this.lines.delete(line.boundaries);
-        for (let i = 0; i < line.tiles.length; ++i) {
-            const tile: ITile = line.tiles[i]!;
+        for (const [i, tile] of line.tiles.entries()) {
             const isFirst: boolean = i === 0;
             const isLast: boolean = i === line.tiles.length - 1;
             if (isFirst || isLast) {

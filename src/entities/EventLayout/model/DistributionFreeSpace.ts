@@ -3,12 +3,12 @@ import { FloatComparator, BoundaryUtils, ButtonWidthCalculator } from "../lib";
 import type { IHiddenTilesManager, ITile, ITileLine } from "./typings";
 
 export class DistributionFreeSpace {
-    private readonly hiddenTilesManager: IHiddenTilesManager;
-    private buttonWidthPercent: number = 0;
+    private readonly _hiddenTilesManager: IHiddenTilesManager;
+    private _buttonWidthPercent: number = 0;
 
     constructor(hiddenTilesManager: IHiddenTilesManager, containerWidth: number) {
-        this.hiddenTilesManager = hiddenTilesManager;
-        this.buttonWidthPercent = ButtonWidthCalculator.calculate(containerWidth);
+        this._hiddenTilesManager = hiddenTilesManager;
+        this._buttonWidthPercent = ButtonWidthCalculator.calculate(containerWidth);
     }
 
     public fillEmptySpace(line: ITileLine): void {
@@ -19,8 +19,8 @@ export class DistributionFreeSpace {
         const firstTile: ITile = line.tiles[0]!;
         let rightBoundary: number = this.getRightBoundary(lastTile, line);
         const leftBoundary: number = this.getLeftBoundary(firstTile, line);
-        if (!FloatComparator.equal(rightBoundary, line.boundaries.right) && this.hiddenTilesManager.hasHiddenInRange(line.boundaries)) {
-            rightBoundary = Sizes.MAX_PERCENT_WIDTH - this.buttonWidthPercent;
+        if (!FloatComparator.equal(rightBoundary, line.boundaries.right) && this._hiddenTilesManager.hasHiddenInRange(line.boundaries)) {
+            rightBoundary = Sizes.MAX_PERCENT_WIDTH - this._buttonWidthPercent;
         }
         const isRightDistribute: boolean = !lastTile.next.length && FloatComparator.greater(rightBoundary, line.boundaries.right);
         const isLeftDistribute: boolean = !firstTile.prev.length && FloatComparator.greater(line.boundaries.left, leftBoundary);

@@ -1,4 +1,4 @@
-import { required, validate } from "@shared/lib";
+import { getElementAt, required, validate } from "@shared/lib";
 import type { ILinkedEntity } from "../typings";
 export abstract class LinkedEntity<T extends ILinkedEntity<T>> implements ILinkedEntity<T> {
     public next: T[] = [];
@@ -44,10 +44,10 @@ export abstract class LinkedEntity<T extends ILinkedEntity<T>> implements ILinke
 
     public deleteAllLinks() {
         while (this.next.length) {
-            this.removeNext(this.next[0]!);
+            this.removeNext(getElementAt(this.next, 0));
         }
         while (this.prev.length) {
-            this.removePrev(this.prev[0]!);
+            this.removePrev(getElementAt(this.prev, 0));
         }
     }
 }

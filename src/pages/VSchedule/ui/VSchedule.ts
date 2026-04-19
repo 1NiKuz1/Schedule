@@ -21,27 +21,27 @@ export default defineComponent({
         const scheduleEvents: Ref<IEvent[]> = ref(allEvents);
 
         function createEveryHoursEvents(): IEvent[] {
-            const currnetStart: Date = new Date("2023-10-01T00:00");
-            const currnetEnd: Date = new Date("2023-10-01T00:30");
+            const currentStart: Date = new Date("2023-10-01T00:00");
+            const currentEnd: Date = new Date("2023-10-01T00:30");
             const events: IEvent[] = [];
             const endPoint: Date = new Date("2023-10-02T10:00");
             let counter: number = 0;
             for (let i = 0; i < 30; ++i) {
-                allowedDates.value.push(formatDateToString(currnetStart));
+                allowedDates.value.push(formatDateToString(currentStart));
                 do {
                     const title: string = "MeetingHours_" + counter;
                     const colorNumber: number = (Math.abs(hashStringToNumber(title)) % 30) + 1;
                     events.push({
                         id: counter + "",
-                        start: new Date(currnetStart),
-                        end: new Date(currnetEnd),
+                        start: new Date(currentStart),
+                        end: new Date(currentEnd),
                         title,
                         bgColorClass: "viz-color-back-" + colorNumber
                     });
                     ++counter;
-                    currnetStart.setHours(currnetStart.getHours() + 1);
-                    currnetEnd.setHours(currnetEnd.getHours() + 1);
-                } while (currnetStart.getDate() !== endPoint.getDate());
+                    currentStart.setHours(currentStart.getHours() + 1);
+                    currentEnd.setHours(currentEnd.getHours() + 1);
+                } while (currentStart.getDate() !== endPoint.getDate());
                 endPoint.setDate(endPoint.getDate() + 1);
             }
 

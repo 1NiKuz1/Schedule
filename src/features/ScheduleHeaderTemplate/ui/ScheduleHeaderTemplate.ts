@@ -2,7 +2,7 @@ import { defineComponent, onMounted, onBeforeUnmount, computed, ref } from "vue"
 import type { PropType } from "vue";
 import { RangeDate } from "@entities/RangeDate";
 import { DropDownList } from "@shared/ui";
-import { adjustWidthToParentScroll, resizeObserver, createDebounce } from "@shared/lib";
+import { adjustWidthToParentScroll, resizeObserver, createDebounce, getElementAt } from "@shared/lib";
 import "./ScheduleHeaderTemplate.scss";
 
 export default defineComponent({
@@ -54,13 +54,13 @@ export default defineComponent({
             }
         });
 
-        function onChangeDropDownList(typeOfRange): void {
+        function onChangeDropDownList(typeOfRange: string): void {
             selectedTypeOfRange.value = typeOfRange;
             emit("on-change-drop-down-list", typeOfRange);
         }
 
         function onSelectDate(newDate: string): void {
-            selectedTypeOfRange.value = props.rangeTypes[0]!;
+            selectedTypeOfRange.value = getElementAt(props.rangeTypes, 0);
             emit("on-select-date", newDate);
         }
 

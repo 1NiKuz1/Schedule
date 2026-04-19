@@ -69,7 +69,7 @@ export default defineComponent({
             }
             for (const event of props.events) {
                 const key: string = formatDateToString(event.start);
-                const eventsByKey: IDayOfMonth = eventsOfMonth.get(key)!;
+                const eventsByKey: IDayOfMonth | undefined = eventsOfMonth.get(key);
                 if (eventsByKey) {
                     if (eventsByKey.events.length < MAX_COUNT_OF_VISIBLE_TILES) {
                         eventsByKey.events.push(event);
@@ -80,10 +80,11 @@ export default defineComponent({
             }
             let numOfRow = 0;
             for (const eventsOfDay of eventsOfMonth.values()) {
-                visibleEvents.value[numOfRow] = !visibleEvents.value[numOfRow] ? [] : visibleEvents.value[numOfRow]!;
-                visibleEvents.value[numOfRow]!.push(eventsOfDay);
+                const row = visibleEvents.value[numOfRow] ?? [];
+                visibleEvents.value[numOfRow] = row;
+                row.push(eventsOfDay);
                 const daysOfWeek: number = 7;
-                if (visibleEvents.value[numOfRow]!.length === daysOfWeek) {
+                if (row.length === daysOfWeek) {
                     ++numOfRow;
                 }
             }

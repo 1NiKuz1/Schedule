@@ -1,5 +1,5 @@
 import type { IEvent } from "@shared/typings";
-import { required, validate } from "@shared/lib";
+import { getElementAt, required, validate } from "@shared/lib";
 import type { ITile, IVerticalBoundaries, IBoundaries } from "./typings";
 import { LinkedOverlapEntity } from "./structures";
 import { BoundaryUtils, FloatComparator } from "../lib";
@@ -91,7 +91,7 @@ export class Tile extends LinkedOverlapEntity<ITile> implements ITile {
     private purgeInvalidLinks(isNext: boolean): void {
         const links = isNext ? this.next : this.prev;
         for (let i = links.length - 1; i >= 0; i--) {
-            const tile: ITile = links[i]!;
+            const tile: ITile = getElementAt(links, i);
             if (!this.isNeighbour(tile, isNext)) {
                 if (isNext) {
                     this.removeNext(tile);

@@ -19,6 +19,7 @@
 .schedule-block-extension {
     position: relative;
     width: 4px;
+    background-color: var(--color-back-1);
     cursor: pointer;
 
     &::before {

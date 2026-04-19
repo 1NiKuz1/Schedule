@@ -30,8 +30,9 @@ export default defineComponent({
             emit("on-change", props.dropDownList[index]);
         }
 
-        function handleClickOutside(event): void {
-            if (!event.target.closest(".drop-down-list")) {
+        function handleClickOutside(event: MouseEvent): void {
+            const target = event.target as HTMLElement;
+            if (target && !target.closest(".drop-down-list")) {
                 isShowDropDownList.value = false;
             }
         }
